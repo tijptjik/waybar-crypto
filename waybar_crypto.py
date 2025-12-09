@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/home/io/.config/waybar/.venv/bin/python
 
 import sys
 import os

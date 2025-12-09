@@ -30,6 +30,22 @@ log_cli_level = "INFO"
 log_cli_format = "%(asctime)s [%(levelname)8s] %(message)s (%(filename)s:%(lineno)s)"
 log_cli_date_format = "%Y-%m-%d %H:%M:%S"
 
+[tool.poetry]
+name = "crypto"
+version = "0.1.0"
+description = ""
+authors = ["Mart van de Ven <m@type.hk>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+certifi = "^2024.8.30"
+charset-normalizer = "^3.3.2"
+idna = "^3.8"
+requests = "^2.32.3"
+urllib3 = "^2.2.2"
+
+
 [build-system]
-requires = ["setuptools"]
-build-backend = "setuptools.build_meta"
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
