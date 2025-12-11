@@ -2,6 +2,7 @@
 
 import sys
 import os
+import subprocess
 import requests
 import json
 import configparser
@@ -14,6 +15,22 @@ API_KEY_ENV = "COINMARKETCAP_API_KEY"
 CONFIG_FILE = "config.ini"
 
 MIN_PRECISION = 0
+
+
+def get_fish_env(variable: str) -> str:
+    """Execute a fish command to get an environment variable."""
+    try:
+        command = f"fish -c 'echo ${variable}'"
+        result = subprocess.run(
+            command,
+            shell=True,
+            capture_output=True,
+            text=True,
+            check=True
+        )
+        return result.stdout.strip()
+    except (subprocess.CalledProcessError, FileNotFoundError):
+        return ""
 
 
 class WaybarCrypto(object):
@@ -74,14 +91,12 @@ class WaybarCrypto(object):
             return None
 
         # Attempt to load API key from environment variable
-        # api_key = ""
-        # try:
-            # api_key = str(os.environ[API_KEY_ENV])
-        # except Exception:
-            # print(
-                # "No API key environment variable found. Defaulting to configuration file.",
-                # file=sys.stderr,
-            # )
+        api_key = get_fish_env(API_KEY_ENV)
+        if not api_key:
+            print(
+                "No API key environment variable found. Defaulting to configuration file.",
+                file=sys.stderr,
+            )
 
         # Attempt to parse required fields of crypto.ini
         try:
@@ -160,8 +175,8 @@ class WaybarCrypto(object):
 
             # If API key environment variable didn't exists,
             # read from config file instead
-            # if not api_key:
-            api_key = config["general"]["api_key"]
+            if not api_key:
+                api_key = config["general"]["api_key"]
 
         except Exception as e:
             print(
